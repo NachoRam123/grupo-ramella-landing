@@ -56,7 +56,10 @@ class _LandingPageState extends State<LandingPage> {
               controller: _scrollController,
               child: Column(
                 children: [
-                  VisionSection(key: _visionKey),
+                  VisionSection(
+                    key: _visionKey,
+                    scrollController: _scrollController,
+                  ),
                   ServicesSection(key: _servicesKey),
                   AboutSection(key: _aboutKey),
                   ContactSection(key: _contactKey),
