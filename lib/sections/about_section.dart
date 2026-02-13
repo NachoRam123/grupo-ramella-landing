@@ -53,7 +53,8 @@ class AboutSection extends StatelessWidget {
   }
 }
 
-class _ProfileCard extends StatelessWidget {
+
+class _ProfileCard extends StatefulWidget {
   final String imagePath;
   final String name;
   final List<String> titles;
@@ -67,50 +68,66 @@ class _ProfileCard extends StatelessWidget {
   });
 
   @override
+  State<_ProfileCard> createState() => _ProfileCardState();
+}
+
+class _ProfileCardState extends State<_ProfileCard> {
+  bool _isHovering = false;
+
+  @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Container(
-          width: 250,
-          height: 250,
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            image: DecorationImage(
-              image: AssetImage(imagePath),
-              fit: BoxFit.cover,
-            ),
-            border: Border.all(color: AppColors.primaryDark, width: 4),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withOpacity(0.1),
-                blurRadius: 15,
-                offset: const Offset(0, 5),
+    return MouseRegion(
+      onEnter: (_) => setState(() => _isHovering = true),
+      onExit: (_) => setState(() => _isHovering = false),
+      child: Column(
+        children: [
+          AnimatedContainer(
+            duration: const Duration(milliseconds: 300),
+            width: 250,
+            height: 250,
+            transform: Matrix4.identity()..scale(_isHovering ? 1.05 : 1.0),
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              image: DecorationImage(
+                image: AssetImage(widget.imagePath),
+                fit: BoxFit.cover,
               ),
-            ],
-          ),
-        ).animate().fadeIn(delay: delay.ms).scale(begin: const Offset(0.8, 0.8), end: const Offset(1, 1), duration: 600.ms, curve: Curves.easeOutBack),
-        const SizedBox(height: 20),
-        Text(
-          name,
-          style: AppTextStyles.bodyText.copyWith(
-            fontWeight: FontWeight.bold,
-            fontSize: 24,
-            color: AppColors.primaryDark,
-          ),
-        ).animate().fadeIn(delay: (delay + 300).ms).slideY(begin: 0.5, end: 0),
-        const SizedBox(height: 10),
-        ...titles.map((title) => Padding(
-          padding: const EdgeInsets.symmetric(vertical: 2),
-          child: Text(
-            title,
-            style: AppTextStyles.bodyText.copyWith(
-              color: Colors.grey[700],
-              fontSize: 16,
+              border: Border.all(
+                color: _isHovering ? AppColors.secondaryGreen : AppColors.primaryDark,
+                width: 4
+              ),
+              boxShadow: [
+                BoxShadow(
+                  color: _isHovering ? AppColors.secondaryGreen.withOpacity(0.3) : Colors.black.withOpacity(0.1),
+                  blurRadius: _isHovering ? 25 : 15,
+                  offset: const Offset(0, 5),
+                ),
+              ],
             ),
-            textAlign: TextAlign.center,
-          ),
-        )).toList().animate(interval: 100.ms).fadeIn(delay: (delay + 500).ms),
-      ],
+          ).animate().fadeIn(delay: widget.delay.ms).scale(begin: const Offset(0.8, 0.8), end: const Offset(1, 1), duration: 600.ms, curve: Curves.easeOutBack),
+          const SizedBox(height: 20),
+          Text(
+            widget.name,
+            style: AppTextStyles.bodyText.copyWith(
+              fontWeight: FontWeight.bold,
+              fontSize: 24,
+              color: _isHovering ? AppColors.secondaryGreen : AppColors.primaryDark,
+            ),
+          ).animate().fadeIn(delay: (widget.delay + 300).ms).slideY(begin: 0.5, end: 0),
+          const SizedBox(height: 10),
+          ...widget.titles.map((title) => Padding(
+            padding: const EdgeInsets.symmetric(vertical: 2),
+            child: Text(
+              title,
+              style: AppTextStyles.bodyText.copyWith(
+                color: Colors.grey[700],
+                fontSize: 16,
+              ),
+              textAlign: TextAlign.center,
+            ),
+          )).toList().animate(interval: 100.ms).fadeIn(delay: (widget.delay + 500).ms),
+        ],
+      ),
     );
   }
 }

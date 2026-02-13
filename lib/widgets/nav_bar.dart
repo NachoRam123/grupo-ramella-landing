@@ -28,7 +28,7 @@ class NavBar extends StatelessWidget {
             children: [
               Image.asset(
                 'assets/images/logo.png',
-                height: 120, // Significantly increased
+                height: 90, // Adjusted to intermediate size
                 fit: BoxFit.contain,
                 errorBuilder: (context, error, stackTrace) => const Icon(Icons.attach_money, size: 50, color: AppColors.primaryDark),
               ),
