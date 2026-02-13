@@ -1,0 +1,27 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [ main ]
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+      - name: Install Dependencies
+        run: flutter pub get
+      - name: Build Web
+        # SI TU REPO SE LLAMA DIFERENTE, CAMBIA LO QUE ESTÁ ENTRE COMILLAS:
+        run: flutter build web --release --base-href "/grupo-ramella-landing/"
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./build/web
