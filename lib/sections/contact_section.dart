@@ -1,15 +1,40 @@
 import 'package:flutter/material.dart';
 import 'package:grupo_ramella_landing/constants.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 
-class ContactSection extends StatelessWidget {
+class ContactSection extends StatefulWidget {
   const ContactSection({super.key});
 
+  @override
+  State<ContactSection> createState() => _ContactSectionState();
+}
+
+class _ContactSectionState extends State<ContactSection> {
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _messageController = TextEditingController();
+
   Future<void> _launchEmail() async {
+    final String userEmail = _emailController.text;
+    final String userMessage = _messageController.text;
+
+    if (userMessage.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Por favor escribe un mensaje')),
+      );
+      return;
+    }
+
+    // Construct the email body
+    final String body = "Mensaje de: $userEmail\n\n$userMessage";
+
     final Uri emailLaunchUri = Uri(
       scheme: 'mailto',
       path: 'ignacio@gruporamella.com',
-      query: 'subject=Consulta desde Web&body=Hola, quisiera recibir más información.',
+      queryParameters: {
+        'subject': 'Consulta Web - $userEmail',
+        'body': body,
+      },
     );
 
     if (!await launchUrl(emailLaunchUri)) {
@@ -27,9 +52,10 @@ class ContactSection extends StatelessWidget {
           Text(
             'CONTACTO',
             style: AppTextStyles.sectionTitle,
-          ),
+          ).animate().fadeIn(duration: 600.ms).slideY(begin: 0.2, end: 0),
           const SizedBox(height: 10),
-          Container(height: 4, width: 60, color: AppColors.secondaryGreen),
+          Container(height: 4, width: 60, color: AppColors.secondaryGreen)
+              .animate().fadeIn(delay: 200.ms).scaleX(),
           const SizedBox(height: 40),
           Container(
             constraints: const BoxConstraints(maxWidth: 600),
@@ -46,24 +72,36 @@ class ContactSection extends StatelessWidget {
               ],
             ),
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                const Icon(Icons.email_outlined, size: 60, color: AppColors.primaryDark),
-                const SizedBox(height: 20),
-                Text(
-                  'Para escribir un mensaje, este debe llegar a la siguiente casilla:',
-                  style: AppTextStyles.bodyText,
-                  textAlign: TextAlign.center,
-                ),
-                const SizedBox(height: 10),
-                SelectableText(
-                  'ignacio@gruporamella.com',
-                  style: AppTextStyles.bodyText.copyWith(
-                    fontWeight: FontWeight.bold,
-                    color: AppColors.primaryDark,
-                    fontSize: 20,
-                  ),
-                ),
+                const Icon(Icons.email_outlined, size: 60, color: AppColors.primaryDark)
+                    .animate().fadeIn(delay: 300.ms).scale(),
                 const SizedBox(height: 30),
+                
+                // Email Input
+                TextField(
+                  controller: _emailController,
+                  decoration: const InputDecoration(
+                    labelText: 'Tu Email',
+                    border: OutlineInputBorder(),
+                    prefixIcon: Icon(Icons.email),
+                  ),
+                ).animate().fadeIn(delay: 400.ms).slideX(begin: -0.1, end: 0),
+                const SizedBox(height: 20),
+
+                // Message Input
+                TextField(
+                  controller: _messageController,
+                  maxLines: 5,
+                  decoration: const InputDecoration(
+                    labelText: 'Tu Mensaje',
+                    alignLabelWithHint: true,
+                    border: OutlineInputBorder(),
+                    prefixIcon: Icon(Icons.message),
+                  ),
+                ).animate().fadeIn(delay: 500.ms).slideX(begin: 0.1, end: 0),
+                const SizedBox(height: 30),
+
                 ElevatedButton.icon(
                   onPressed: _launchEmail,
                   icon: const Icon(Icons.send),
@@ -71,13 +109,13 @@ class ContactSection extends StatelessWidget {
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppColors.primaryDark,
                     foregroundColor: Colors.white,
-                    padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
+                    padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
                     textStyle: AppTextStyles.bodyText.copyWith(fontWeight: FontWeight.bold),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10),
                     ),
                   ),
-                ),
+                ).animate().fadeIn(delay: 600.ms).shimmer(delay: 1000.ms, duration: 1500.ms),
               ],
             ),
           ),

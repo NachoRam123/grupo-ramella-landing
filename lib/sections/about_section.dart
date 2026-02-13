@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:grupo_ramella_landing/constants.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 
 class AboutSection extends StatelessWidget {
   const AboutSection({super.key});
@@ -14,9 +15,10 @@ class AboutSection extends StatelessWidget {
           Text(
             'QUIÉNES SOMOS',
             style: AppTextStyles.sectionTitle,
-          ),
+          ).animate().fadeIn(duration: 600.ms).slideY(begin: 0.2, end: 0),
           const SizedBox(height: 10),
-          Container(height: 4, width: 60, color: AppColors.secondaryGreen),
+          Container(height: 4, width: 60, color: AppColors.secondaryGreen)
+              .animate().fadeIn(delay: 200.ms).expandHorizontally(),
           const SizedBox(height: 60),
           Wrap(
             spacing: 50,
@@ -31,6 +33,7 @@ class AboutSection extends StatelessWidget {
                   'Analista Económico',
                   'Idóneo Mercado de Capitales',
                 ],
+                delay: 0,
               ),
               _ProfileCard(
                 imagePath: 'assets/images/ignacio.png',
@@ -40,6 +43,7 @@ class AboutSection extends StatelessWidget {
                   'Consultor Económico-Financiero',
                   'Analista de Datos',
                 ],
+                delay: 200,
               ),
             ],
           ),
@@ -53,11 +57,13 @@ class _ProfileCard extends StatelessWidget {
   final String imagePath;
   final String name;
   final List<String> titles;
+  final int delay;
 
   const _ProfileCard({
     required this.imagePath,
     required this.name,
     required this.titles,
+    this.delay = 0,
   });
 
   @override
@@ -82,7 +88,7 @@ class _ProfileCard extends StatelessWidget {
               ),
             ],
           ),
-        ),
+        ).animate().fadeIn(delay: delay.ms).scale(begin: const Offset(0.8, 0.8), end: const Offset(1, 1), duration: 600.ms, curve: Curves.easeOutBack),
         const SizedBox(height: 20),
         Text(
           name,
@@ -91,7 +97,7 @@ class _ProfileCard extends StatelessWidget {
             fontSize: 24,
             color: AppColors.primaryDark,
           ),
-        ),
+        ).animate().fadeIn(delay: (delay + 300).ms).slideY(begin: 0.5, end: 0),
         const SizedBox(height: 10),
         ...titles.map((title) => Padding(
           padding: const EdgeInsets.symmetric(vertical: 2),
@@ -103,7 +109,7 @@ class _ProfileCard extends StatelessWidget {
             ),
             textAlign: TextAlign.center,
           ),
-        )),
+        )).toList().animate(interval: 100.ms).fadeIn(delay: (delay + 500).ms),
       ],
     );
   }

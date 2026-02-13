@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:grupo_ramella_landing/constants.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 
 class VisionSection extends StatelessWidget {
   const VisionSection({super.key});
@@ -18,7 +19,7 @@ class VisionSection extends StatelessWidget {
               fit: BoxFit.cover,
               color: AppColors.primaryDark.withOpacity(0.85),
               colorBlendMode: BlendMode.darken,
-            ),
+            ).animate().fadeIn(duration: 800.ms),
           ),
           Center(
             child: Container(
@@ -31,7 +32,7 @@ class VisionSection extends StatelessWidget {
                     'VISIÓN',
                     style: AppTextStyles.heroTitle.copyWith(color: AppColors.accentGreen2),
                     textAlign: TextAlign.center,
-                  ),
+                  ).animate().fadeIn(delay: 200.ms).slideY(begin: -0.2, end: 0),
                   const SizedBox(height: 30),
                   Text(
                     'Consultoría financiera de referencia, brindando asesoramiento profesional y personalizado, sustentado en el análisis riguroso del perfil y los objetivos de cada cliente, con foco en la toma de decisiones estratégicas y en la construcción de relaciones sólidas y sostenibles de largo plazo.',
@@ -41,7 +42,7 @@ class VisionSection extends StatelessWidget {
                       height: 1.6,
                     ),
                     textAlign: TextAlign.center,
-                  ),
+                  ).animate().fadeIn(delay: 400.ms).slideY(begin: 0.2, end: 0),
                 ],
               ),
             ),

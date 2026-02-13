@@ -19,7 +19,7 @@ class NavBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       color: Colors.white,
-      padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 20),
+      padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 10), // Reduced vertical padding to accommodate larger logo
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -28,7 +28,7 @@ class NavBar extends StatelessWidget {
             children: [
               Image.asset(
                 'assets/images/logo.png',
-                height: 50,
+                height: 80, // Increased from 50
                 errorBuilder: (context, error, stackTrace) => const Icon(Icons.attach_money, size: 50, color: AppColors.primaryDark),
               ),
               const SizedBox(width: 10),
