@@ -18,7 +18,7 @@ class AboutSection extends StatelessWidget {
           ).animate().fadeIn(duration: 600.ms).slideY(begin: 0.2, end: 0),
           const SizedBox(height: 10),
           Container(height: 4, width: 60, color: AppColors.secondaryGreen)
-              .animate().fadeIn(delay: 200.ms).expandHorizontally(),
+              .animate().fadeIn(delay: 200.ms).scaleX(begin: 0, alignment: Alignment.center),
           const SizedBox(height: 60),
           Wrap(
             spacing: 50,

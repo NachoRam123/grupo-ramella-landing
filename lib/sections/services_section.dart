@@ -18,7 +18,7 @@ class ServicesSection extends StatelessWidget {
           ).animate().fadeIn(duration: 500.ms).moveY(begin: 20, end: 0),
           const SizedBox(height: 10),
           Container(height: 4, width: 60, color: AppColors.secondaryGreen)
-              .animate().fadeIn(delay: 200.ms).expandHorizontally(),
+              .animate().fadeIn(delay: 200.ms).scaleX(begin: 0, alignment: Alignment.centerLeft),
           const SizedBox(height: 60),
           Wrap(
             spacing: 30,
