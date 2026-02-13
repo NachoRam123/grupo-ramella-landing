@@ -77,7 +77,8 @@ class ServicesSection extends StatelessWidget {
   }
 }
 
-class _ServiceCard extends StatelessWidget {
+
+class _ServiceCard extends StatefulWidget {
   final String title;
   final List<String> items;
   final IconData icon;
@@ -91,57 +92,75 @@ class _ServiceCard extends StatelessWidget {
   });
 
   @override
+  State<_ServiceCard> createState() => _ServiceCardState();
+}
+
+class _ServiceCardState extends State<_ServiceCard> {
+  bool _isHovering = false;
+
+  @override
   Widget build(BuildContext context) {
-    return Container(
-      width: 350,
-      padding: const EdgeInsets.all(25),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(15),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.05),
-            blurRadius: 10,
-            offset: const Offset(0, 5),
-          ),
-        ],
-        border: Border.all(color: AppColors.accentGreen2.withOpacity(0.3)),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          CircleAvatar(
-            backgroundColor: AppColors.accentGreen1.withOpacity(0.2),
-            radius: 30,
-            child: Icon(icon, color: AppColors.primaryDark, size: 30),
-          ).animate().scale(delay: (delay + 200).ms, duration: 400.ms),
-          const SizedBox(height: 20),
-          Text(
-            title,
-            style: AppTextStyles.bodyText.copyWith(
-              fontWeight: FontWeight.bold,
-              fontSize: 18,
+    return MouseRegion(
+      onEnter: (_) => setState(() => _isHovering = true),
+      onExit: (_) => setState(() => _isHovering = false),
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 200),
+        width: 350,
+        transform: Matrix4.identity()..scale(_isHovering ? 1.05 : 1.0),
+        padding: const EdgeInsets.all(25),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(15),
+          boxShadow: [
+            BoxShadow(
+              color: _isHovering 
+                  ? AppColors.primaryDark.withOpacity(0.2) 
+                  : Colors.black.withOpacity(0.05),
+              blurRadius: _isHovering ? 20 : 10,
+              offset: _isHovering ? const Offset(0, 10) : const Offset(0, 5),
             ),
+          ],
+          border: Border.all(
+            color: _isHovering ? AppColors.secondaryGreen : AppColors.accentGreen2.withOpacity(0.3),
+            width: _isHovering ? 2 : 1,
           ),
-          const SizedBox(height: 15),
-          ...items.map((item) => Padding(
-            padding: const EdgeInsets.symmetric(vertical: 4),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Icon(Icons.check_circle, size: 16, color: AppColors.secondaryGreen),
-                const SizedBox(width: 8),
-                Expanded(
-                  child: Text(
-                    item,
-                    style: AppTextStyles.bodyText.copyWith(fontSize: 14),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            CircleAvatar(
+              backgroundColor: AppColors.accentGreen1.withOpacity(0.2),
+              radius: 30,
+              child: Icon(widget.icon, color: AppColors.primaryDark, size: 30),
+            ).animate().scale(delay: (widget.delay + 200).ms, duration: 400.ms),
+            const SizedBox(height: 20),
+            Text(
+              widget.title,
+              style: AppTextStyles.bodyText.copyWith(
+                fontWeight: FontWeight.bold,
+                fontSize: 18,
+              ),
+            ),
+            const SizedBox(height: 15),
+            ...widget.items.map((item) => Padding(
+              padding: const EdgeInsets.symmetric(vertical: 4),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Icon(Icons.check_circle, size: 16, color: AppColors.secondaryGreen),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: Text(
+                      item,
+                      style: AppTextStyles.bodyText.copyWith(fontSize: 14),
+                    ),
                   ),
-                ),
-              ],
-            ),
-          )),
-        ],
-      ),
-    ).animate().fadeIn(delay: delay.ms).slideY(begin: 0.1, end: 0, duration: 500.ms);
+                ],
+              ),
+            )),
+          ],
+        ),
+      ).animate().fadeIn(delay: widget.delay.ms).scaleX(begin: 0, alignment: Alignment.centerLeft, duration: 500.ms),
+    );
   }
 }

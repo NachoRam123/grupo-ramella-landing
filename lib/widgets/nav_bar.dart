@@ -19,7 +19,7 @@ class NavBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       color: Colors.white,
-      padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 10), // Reduced vertical padding to accommodate larger logo
+      padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 15),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -28,18 +28,15 @@ class NavBar extends StatelessWidget {
             children: [
               Image.asset(
                 'assets/images/logo.png',
-                height: 80, // Increased from 50
+                height: 120, // Significantly increased
+                fit: BoxFit.contain,
                 errorBuilder: (context, error, stackTrace) => const Icon(Icons.attach_money, size: 50, color: AppColors.primaryDark),
               ),
               const SizedBox(width: 10),
-              // Text(
-              //   'RAMELLA',
-              //   style: AppTextStyles.navLink.copyWith(fontWeight: FontWeight.bold, fontSize: 24),
-              // ),
             ],
           ),
           // Navigation Links
-          if (MediaQuery.of(context).size.width > 800)
+          if (MediaQuery.of(context).size.width > 900) // Increased breakpoint for safety
             Row(
               children: [
                 _NavBarItem(title: 'Visión', onTap: onVisionTap),
@@ -53,9 +50,8 @@ class NavBar extends StatelessWidget {
             )
           else
             IconButton(
-              icon: const Icon(Icons.menu, color: AppColors.primaryDark),
+              icon: const Icon(Icons.menu, color: AppColors.primaryDark, size: 30),
               onPressed: () {
-                // Simple mobile menu for now
                 showModalBottomSheet(
                   context: context,
                   builder: (context) => Container(
@@ -79,21 +75,45 @@ class NavBar extends StatelessWidget {
   }
 }
 
-class _NavBarItem extends StatelessWidget {
+class _NavBarItem extends StatefulWidget {
   final String title;
   final VoidCallback onTap;
 
   const _NavBarItem({required this.title, required this.onTap});
 
   @override
+  State<_NavBarItem> createState() => _NavBarItemState();
+}
+
+class _NavBarItemState extends State<_NavBarItem> {
+  bool _isHovering = false;
+
+  @override
   Widget build(BuildContext context) {
     return MouseRegion(
+      onEnter: (_) => setState(() => _isHovering = true),
+      onExit: (_) => setState(() => _isHovering = false),
       cursor: SystemMouseCursors.click,
       child: GestureDetector(
-        onTap: onTap,
-        child: Text(
-          title,
-          style: AppTextStyles.navLink,
+        onTap: widget.onTap,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              widget.title,
+              style: AppTextStyles.navLink.copyWith(
+                color: _isHovering ? AppColors.secondaryGreen : AppColors.primaryDark,
+              ),
+            ),
+            const SizedBox(height: 4),
+            AnimatedContainer(
+              duration: const Duration(milliseconds: 300),
+              curve: Curves.easeOut,
+              height: 2,
+              width: _isHovering ? 40 : 0, // Expands from center implicitly or left depending on alignment
+              color: AppColors.secondaryGreen,
+            ),
+          ],
         ),
       ),
     );
