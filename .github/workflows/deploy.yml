@@ -25,8 +25,7 @@ jobs:
       - name: Install Dependencies
         run: flutter pub get
       - name: Build Web
-        # IMPORTANTE: CAMBIA EL NOMBRE DEL REPO AQUI SI ES DIFERENTE
-        run: flutter build web --release --base-href "/grupo-ramella-landing/"
+        run: flutter build web --release --base-href "/"
       - name: Setup Pages
         uses: actions/configure-pages@v5
       - name: Upload artifact
