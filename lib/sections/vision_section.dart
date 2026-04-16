@@ -65,7 +65,7 @@ class VisionSection extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    'VISIÓN',
+                    'INVERSIONES & FINANCIAMIENTO',
                     style: AppTextStyles.heroTitle.copyWith(color: AppColors.accentGreen2),
                     textAlign: TextAlign.center,
                   ).animate().fadeIn(delay: 200.ms).slideY(begin: -0.2, end: 0),
